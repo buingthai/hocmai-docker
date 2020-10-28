@@ -1,0 +1,28 @@
+version: '3.8'
+services: 
+    hocmai-web:
+        image: hocmai-dev:latest
+        build: .
+        container_name: hocmai-web
+        networks: 
+            static-network:
+                ipv4_address: 172.18.0.2
+        volumes: 
+            - "/home/thaibn/workspace/hm/hocmai-web/:/var/www/html"
+            - "/home/thaibn/workspace/datamysql/moodle:/var/moodledata"
+    dbhost:
+        image: mariadb
+        container_name: mariadb-host
+        volumes: 
+            - "/home/thaibn/workspace/datamysql:/var/lib/mysql/"
+        networks: 
+            static-network:
+                ipv4_address: 172.18.0.3
+        environment: 
+            MYSQL_ROOT_PASSWORD: '123456'
+        restart: always
+networks: 
+    static-network:
+        ipam:
+            config: 
+                - subnet: 172.18.0.0/16
